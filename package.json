@@ -1,0 +1,17 @@
+{
+  "name": "ai-content-optimizer",
+  "version": "1.0.0",
+  "description": "AI-driven SEO content optimization platform",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install --prefix server && npm install --prefix client"
+  },
+  "keywords": ["seo", "ai", "content", "optimization"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

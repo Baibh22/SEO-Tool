@@ -1,0 +1,56 @@
+.draft-editor {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px);
+}
+
+.editor-header {
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.title-input {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 5px 0;
+}
+
+.title-input:focus {
+  outline: none;
+  border-bottom-color: #3498db;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editor-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.DraftEditor-root {
+  height: 100%;
+}
+
+.DraftEditor-editorContainer {
+  min-height: 400px;
+}
+
+.public-DraftEditor-content {
+  min-height: 400px;
+  font-size: 16px;
+  line-height: 1.6;
+}
