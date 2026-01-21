@@ -14,6 +14,20 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'AI Content Optimizer API',
+    status: 'running',
+    endpoints: {
+      api: '/api',
+      health: '/health',
+      drafts: '/api/drafts',
+      seo: '/api/seo'
+    }
+  });
+});
+
 // Routes
 app.get('/api', (req, res) => {
   res.json({ 
