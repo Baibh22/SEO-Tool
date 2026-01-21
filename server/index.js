@@ -15,6 +15,17 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'AI Content Optimizer API',
+    version: '1.0.0',
+    endpoints: {
+      drafts: '/api/drafts',
+      seo: '/api/seo'
+    }
+  });
+});
+
 app.use('/api/drafts', draftRoutes);
 app.use('/api/seo', seoRoutes);
 
