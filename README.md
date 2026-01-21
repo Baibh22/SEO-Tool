@@ -1,113 +1,135 @@
 # AI Content Optimizer
 
-Full-stack web application for content creators to draft, revise, and optimize written content using AI-driven SEO analysis.
+A full-stack web application that enables content creators to draft, revise, and optimize written content using AI-driven SEO analysis. The system provides real-time keyword suggestions, SEO scoring, and revision tracking to help improve content quality over multiple iterations.
 
 ## Features
 
-- Rich-text editor with Draft.js
-- Real-time SEO analysis via OpenRouter API
-- Keyword suggestions and optimization recommendations
-- Revision tracking with improvement metrics
-- SEO score visualization
+- **Rich Text Editor**: Draft.js-powered editor for seamless content creation
+- **AI-Powered SEO Analysis**: Real-time content analysis using OpenRouter API
+- **SEO Scoring**: Get comprehensive SEO scores (0-100) for your content
+- **Keyword Suggestions**: AI-generated keyword recommendations
+- **Optimization Recommendations**: Actionable insights to improve content
+- **Revision Tracking**: Track improvements across multiple content versions
+- **Revision History**: View SEO score progression over time
 
 ## Tech Stack
 
-**Frontend:** React, Draft.js
-**Backend:** Node.js, Express
-**Database:** MongoDB with Mongoose
-**AI:** OpenRouter API
+### Frontend
+- React.js
+- Draft.js (Rich text editor)
+- Axios (API client)
 
-## Local Development
-
-1. Install dependencies:
-```bash
-npm run install-all
-```
-
-2. Configure environment variables:
-
-**Backend** (`server/.env`):
-```bash
-cd server
-cp .env.example .env
-# Edit with your MongoDB URI and OpenRouter API key
-```
-
-**Frontend** (`client/.env`):
-```bash
-cd client
-cp .env.example .env
-# Default: REACT_APP_API_URL=http://localhost:5000/api
-```
-
-3. Run the application:
-```bash
-npm run dev
-```
-
-Server runs on http://localhost:5000
-Client runs on http://localhost:3000
-
-## Deployment on Render
-
-### Option 1: Using render.yaml (Recommended)
-
-1. Push your code to GitHub
-2. Go to Render Dashboard → "New" → "Blueprint"
-3. Connect your repository
-4. Render will detect `render.yaml` and create 2 services:
-   - **Backend API** (Web Service)
-   - **Frontend** (Static Site)
-
-5. Configure environment variables:
-
-**Backend (content-optimizer-api):**
-- `MONGODB_URI` = your MongoDB connection string
-- `OPENROUTER_API_KEY` = your OpenRouter API key
-- `CLIENT_URL` = your frontend URL (e.g., https://your-app.onrender.com)
-
-**Frontend (content-optimizer-frontend):**
-- `REACT_APP_API_URL` = your backend URL (e.g., https://your-api.onrender.com/api)
-
-### Option 2: Manual Setup
-
-**Backend:**
-1. New Web Service → Connect repo
-2. Root Directory: `server`
-3. Build Command: `npm install`
-4. Start Command: `npm start`
-5. Add environment variables (see above)
-
-**Frontend:**
-1. New Static Site → Connect repo
-2. Root Directory: `client`
-3. Build Command: `npm install && npm run build`
-4. Publish Directory: `build`
-5. Add `REACT_APP_API_URL` environment variable
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- OpenRouter API (AI integration)
 
 ## Project Structure
 
 ```
-├── client/              # React frontend
+├── client/                 # React frontend application
+│   ├── public/            # Static files
 │   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── services/    # API client
-│   │   └── App.js       # Main app
+│   │   ├── components/    # React components
+│   │   │   ├── DraftEditor.js
+│   │   │   ├── DraftList.js
+│   │   │   └── SEOPanel.js
+│   │   ├── services/      # API client
+│   │   └── App.js         # Main application
 │   └── package.json
-├── server/              # Express backend
-│   ├── config/          # Database config
-│   ├── models/          # Mongoose models
-│   ├── routes/          # API routes
-│   ├── services/        # OpenRouter integration
-│   ├── index.js         # Server entry
+│
+├── server/                # Express backend application
+│   ├── config/           # Database configuration
+│   ├── models/           # Mongoose schemas
+│   ├── routes/           # API routes
+│   ├── services/         # OpenRouter integration
+│   ├── index.js          # Server entry point
 │   └── package.json
-└── render.yaml          # Render deployment config
+│
+└── README.md
 ```
+
+## Installation
+
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB (local or Atlas)
+- OpenRouter API key
+
+### Setup
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/Baibh22/SEO-Tool.git
+cd SEO-Tool
+```
+
+2. **Install dependencies**
+```bash
+# Install root dependencies
+npm install
+
+# Install server dependencies
+cd server
+npm install
+
+# Install client dependencies
+cd ../client
+npm install
+```
+
+3. **Configure environment variables**
+
+**Backend** (`server/.env`):
+```env
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_API_URL=https://openrouter.ai/api/v1/chat/completions
+CLIENT_URL=http://localhost:3000
+```
+
+**Frontend** (`client/.env`):
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+4. **Run the application**
+```bash
+# From root directory
+npm run dev
+```
+
+This will start:
+- Backend server on `http://localhost:5000`
+- Frontend application on `http://localhost:3000`
 
 ## API Endpoints
 
+### Drafts
 - `GET /api/drafts` - Get all drafts
+- `GET /api/drafts/:id` - Get single draft
 - `POST /api/drafts` - Create new draft
 - `PUT /api/drafts/:id` - Update draft
 - `DELETE /api/drafts/:id` - Delete draft
-- `POST /api/seo/analyze/:draftId` - Analyze SEO and create revision
+
+### SEO Analysis
+- `POST /api/seo/analyze/:draftId` - Analyze content and create revision
+
+## Usage
+
+1. **Create a Draft**: Click "New Draft" to start writing
+2. **Edit Content**: Use the rich text editor to write your content
+3. **Save**: Click "Save" to store your draft
+4. **Analyze SEO**: Click "Analyze SEO" to get AI-powered insights
+5. **Review Results**: View SEO score, keywords, and recommendations
+6. **Track Progress**: Check revision history to see improvements
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT
