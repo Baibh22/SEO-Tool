@@ -20,4 +20,11 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+
+// Drop old username index if it exists
+User.collection.dropIndex('username_1').catch(() => {
+  // Index doesn't exist, ignore error
+});
+
+module.exports = User;
