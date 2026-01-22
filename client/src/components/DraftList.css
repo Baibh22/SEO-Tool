@@ -12,6 +12,13 @@
   color: #2c3e50;
 }
 
+.no-drafts {
+  text-align: center;
+  color: #95a5a6;
+  padding: 20px;
+  font-size: 14px;
+}
+
 .draft-items {
   display: flex;
   flex-direction: column;
@@ -36,10 +43,36 @@
   border-color: #3498db;
 }
 
+.draft-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 .draft-item h3 {
   font-size: 14px;
-  margin-bottom: 8px;
   color: #2c3e50;
+  margin: 0;
+}
+
+.delete-icon {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 20px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.delete-icon:hover {
+  background: #e74c3c;
+  color: white;
 }
 
 .draft-meta {

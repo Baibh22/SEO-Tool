@@ -9,6 +9,7 @@ const revisionSchema = new mongoose.Schema({
 });
 
 const draftSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   title: { type: String, required: true },
   currentContent: { type: String, default: '' },
   currentSeoScore: { type: Number, default: 0 },

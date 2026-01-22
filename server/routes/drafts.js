@@ -1,21 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Draft = require('../models/Draft');
+const authMiddleware = require('../middleware/auth');
 
-// Get all drafts
+// Protect all draft routes
+router.use(authMiddleware);
+
+// Get all drafts for logged-in user
 router.get('/', async (req, res) => {
   try {
-    const drafts = await Draft.find().sort({ updatedAt: -1 });
+    const drafts = await Draft.find({ userId: req.userId }).sort({ updatedAt: -1 });
     res.json(drafts);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get single draft
+// Get single draft (only if owned by user)
 router.get('/:id', async (req, res) => {
   try {
-    const draft = await Draft.findById(req.params.id);
+    const draft = await Draft.findOne({ _id: req.params.id, userId: req.userId });
     if (!draft) return res.status(404).json({ error: 'Draft not found' });
     res.json(draft);
   } catch (error) {
@@ -23,10 +27,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create draft
+// Create draft for logged-in user
 router.post('/', async (req, res) => {
   try {
-    const draft = new Draft(req.body);
+    const draft = new Draft({
+      ...req.body,
+      userId: req.userId
+    });
     await draft.save();
     res.status(201).json(draft);
   } catch (error) {
@@ -34,11 +41,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update draft
+// Update draft (only if owned by user)
 router.put('/:id', async (req, res) => {
   try {
-    const draft = await Draft.findByIdAndUpdate(
-      req.params.id,
+    const draft = await Draft.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
       { ...req.body, updatedAt: Date.now() },
       { new: true }
     );
@@ -49,10 +56,10 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete draft
+// Delete draft (only if owned by user)
 router.delete('/:id', async (req, res) => {
   try {
-    const draft = await Draft.findByIdAndDelete(req.params.id);
+    const draft = await Draft.findOneAndDelete({ _id: req.params.id, userId: req.userId });
     if (!draft) return res.status(404).json({ error: 'Draft not found' });
     res.json({ message: 'Draft deleted' });
   } catch (error) {

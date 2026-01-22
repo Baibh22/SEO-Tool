@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const draftRoutes = require('./routes/drafts');
 const seoRoutes = require('./routes/seo');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
     endpoints: {
       api: '/api',
       health: '/health',
+      auth: '/api/auth',
       drafts: '/api/drafts',
       seo: '/api/seo'
     }
@@ -34,12 +36,14 @@ app.get('/api', (req, res) => {
     message: 'AI Content Optimizer API',
     version: '1.0.0',
     endpoints: {
+      auth: '/api/auth',
       drafts: '/api/drafts',
       seo: '/api/seo'
     }
   });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/drafts', draftRoutes);
 app.use('/api/seo', seoRoutes);
 

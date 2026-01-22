@@ -3,9 +3,11 @@ import { Editor, EditorState, ContentState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './DraftEditor.css';
 
-function DraftEditor({ draft, onUpdate, onAnalyze, loading }) {
+function DraftEditor({ draft, onUpdate, onAnalyze, onDelete, loading }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [title, setTitle] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
 
   useEffect(() => {
     if (draft) {
@@ -15,16 +17,40 @@ function DraftEditor({ draft, onUpdate, onAnalyze, loading }) {
     }
   }, [draft._id]);
 
-  const handleSave = () => {
-    const content = editorState.getCurrentContent().getPlainText();
-    onUpdate(draft._id, { title, currentContent: content });
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveMessage('');
+    
+    try {
+      const content = editorState.getCurrentContent().getPlainText();
+      await onUpdate(draft._id, { title, currentContent: content });
+      setSaveMessage('Saved successfully!');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      setSaveMessage('Failed to save');
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     const content = editorState.getCurrentContent().getPlainText();
-    onUpdate(draft._id, { currentContent: content }).then(() => {
-      onAnalyze(draft._id);
-    });
+    
+    if (!content.trim()) {
+      alert('Please add some content before analyzing');
+      return;
+    }
+
+    try {
+      await onUpdate(draft._id, { currentContent: content });
+      await onAnalyze(draft._id);
+    } catch (error) {
+      console.error('Error during analysis:', error);
+    }
+  };
+
+  const handleDelete = () => {
+    onDelete(draft._id);
   };
 
   return (
@@ -38,9 +64,15 @@ function DraftEditor({ draft, onUpdate, onAnalyze, loading }) {
           placeholder="Draft title..."
         />
         <div className="editor-actions">
-          <button onClick={handleSave} className="btn-secondary">Save</button>
+          {saveMessage && <span className="save-message">{saveMessage}</span>}
+          <button onClick={handleSave} className="btn-secondary" disabled={saving}>
+            {saving ? 'Saving...' : 'Save'}
+          </button>
           <button onClick={handleAnalyze} className="btn-success" disabled={loading}>
             {loading ? 'Analyzing...' : 'Analyze SEO'}
+          </button>
+          <button onClick={handleDelete} className="btn-danger">
+            Delete
           </button>
         </div>
       </div>
